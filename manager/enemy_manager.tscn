@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dxbsv8ww6p10n"]
+
+[ext_resource type="Script" path="res://manager/enemy_manager.gd" id="1_kxtfm"]
+[ext_resource type="PackedScene" uid="uid://cy2i4oeo6vcr2" path="res://entities/enemy/enemy.tscn" id="2_53ru4"]
+
+[node name="EnemyManager" type="Node"]
+script = ExtResource("1_kxtfm")
+enemy_scene = ExtResource("2_53ru4")
+
+[node name="RoundTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="SpawnIntervalTimer" type="Timer" parent="."]
+one_shot = true

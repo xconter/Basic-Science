@@ -1,9 +1,76 @@
-[gd_scene load_steps=3 format=3 uid="uid://bo2vd0hxpu344"]
+[gd_scene load_steps=6 format=3 uid="uid://bo2vd0hxpu344"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_c0pp8"]
-[ext_resource type="PackedScene" uid="uid://boq44t4rdagy7" path="res://entities/player/player.tscn" id="2_etulq"]
+[ext_resource type="Texture2D" uid="uid://cj8u5cscca2o5" path="res://assets/arena.png" id="2_bj6rd"]
+[ext_resource type="PackedScene" uid="uid://dxbsv8ww6p10n" path="res://manager/enemy_manager.tscn" id="2_ikrom"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q12qt"]
+size = Vector2(32, 300)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lq8c3"]
+size = Vector2(500, 32)
 
 [node name="Main" type="Node"]
 script = ExtResource("1_c0pp8")
 
-[node name="Player" parent="." instance=ExtResource("2_etulq")]
+[node name="EnemyManager" parent="." node_paths=PackedStringArray("enemy_spawn_root", "spawn_rect") instance=ExtResource("2_ikrom")]
+enemy_spawn_root = NodePath("..")
+spawn_rect = NodePath("../SpawnRect")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://entities/bullet/bullet.tscn", "res://entities/enemy/enemy.tscn")
+spawn_path = NodePath("..")
+
+[node name="PlayerSpawnPosition" type="Marker2D" parent="."]
+position = Vector2(320, 185)
+metadata/_edit_lock_ = true
+
+[node name="Arena" type="Sprite2D" parent="."]
+position = Vector2(320, 185)
+texture = ExtResource("2_bj6rd")
+metadata/_edit_lock_ = true
+
+[node name="SpawnRect" type="ReferenceRect" parent="."]
+custom_minimum_size = Vector2(414, 216)
+offset_left = 113.0
+offset_top = 73.0
+offset_right = 527.0
+offset_bottom = 289.0
+mouse_filter = 2
+border_width = 3.0
+metadata/_edit_lock_ = true
+
+[node name="StaticBodies" type="Node2D" parent="."]
+visible = false
+
+[node name="StaticBody2D" type="StaticBody2D" parent="StaticBodies"]
+position = Vector2(79, 182)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBodies/StaticBody2D"]
+shape = SubResource("RectangleShape2D_q12qt")
+metadata/_edit_lock_ = true
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="StaticBodies"]
+position = Vector2(561, 184)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBodies/StaticBody2D2"]
+shape = SubResource("RectangleShape2D_q12qt")
+metadata/_edit_lock_ = true
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="StaticBodies"]
+position = Vector2(325, 39)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBodies/StaticBody2D3"]
+shape = SubResource("RectangleShape2D_lq8c3")
+metadata/_edit_lock_ = true
+
+[node name="StaticBody2D4" type="StaticBody2D" parent="StaticBodies"]
+position = Vector2(325, 321)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBodies/StaticBody2D4"]
+shape = SubResource("RectangleShape2D_lq8c3")
+metadata/_edit_lock_ = true

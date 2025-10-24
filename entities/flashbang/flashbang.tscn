@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://cpffxup4ywymm"]
+
+[ext_resource type="Script" path="res://entities/flashbang/flashbang.gd" id="1_rrt51"]
+[ext_resource type="Texture2D" uid="uid://dpawurajuyb75" path="res://entities/flashbang/dynamite.png" id="2_o4hpc"]
+
+[node name="Flashbang" type="Node2D"]
+script = ExtResource("1_rrt51")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_o4hpc")

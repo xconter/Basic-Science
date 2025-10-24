@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://bo2vd0hxpu344"]
+[gd_scene load_steps=7 format=3 uid="uid://bo2vd0hxpu344"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_c0pp8"]
 [ext_resource type="Texture2D" uid="uid://cj8u5cscca2o5" path="res://assets/arena.png" id="2_bj6rd"]
 [ext_resource type="PackedScene" uid="uid://dxbsv8ww6p10n" path="res://manager/enemy_manager.tscn" id="2_ikrom"]
+[ext_resource type="PackedScene" uid="uid://covsh6j3ml3cb" path="res://ui/game_ui/game_ui.tscn" id="3_plj0i"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q12qt"]
 size = Vector2(32, 300)
@@ -21,9 +22,11 @@ spawn_rect = NodePath("../SpawnRect")
 _spawnable_scenes = PackedStringArray("res://entities/bullet/bullet.tscn", "res://entities/enemy/enemy.tscn")
 spawn_path = NodePath("../YSortRoot")
 
+[node name="GameUI" parent="." node_paths=PackedStringArray("enemy_manager") instance=ExtResource("3_plj0i")]
+enemy_manager = NodePath("../EnemyManager")
+
 [node name="PlayerSpawnPosition" type="Marker2D" parent="."]
 position = Vector2(320, 185)
-metadata/_edit_lock_ = true
 
 [node name="Arena" type="Sprite2D" parent="."]
 position = Vector2(320, 185)

@@ -4,22 +4,82 @@ extends CharacterBody2D
 
 @onready var target_acquisition_timer: Timer = $TargetAcquisitionTimer
 @onready var health_component: HealthComponent = $HealthComponent
+@onready var visuals: Node2D = $Visuals
+@onready var attack_cooldown_timer: Timer = $AttackCooldownTimer
+@onready var charge_attack_timer: Timer = $ChargeAttackTimer
 
 var target_position: Vector2
-
+var state_machine: CallableStateMachine = CallableStateMachine.new()
 
 func _ready():
-	target_acquisition_timer.timeout.connect(_on_target_acquisition_timer_timeout)
+	state_machine.add_states(state_spawn, enter_state_spawn, Callable())
+	state_machine.add_states(state_normal, enter_state_normal, Callable())
+	state_machine.add_states(state_charge_attack, enter_state_charge_attack, Callable())
+	state_machine.add_states(state_attack, enter_state_attack, Callable())
+	state_machine.set_initial_state(state_spawn)
 	
+	target_acquisition_timer.timeout.connect(_on_target_acquisition_timer_timeout)
 	if is_multiplayer_authority():
 		health_component.died.connect(_on_died)
-		acquire_target()
 
 
 func _process(_delta: float) -> void:
+	state_machine.update()
+	if is_multiplayer_authority():
+		move_and_slide()
+
+
+
+func enter_state_spawn():
+	var tween := create_tween()
+	tween.tween_property(visuals, "scale", Vector2.ONE, .4)\
+	.from(Vector2.ZERO)\
+	.set_ease(Tween.EASE_OUT)\
+	.set_trans(Tween.TRANS_BACK)
+	tween.finished.connect(func ():
+		state_machine.change_state(state_normal)
+		)
+
+
+func state_spawn():
+	pass
+
+func enter_state_normal():
+	if is_multiplayer_authority():
+		acquire_target()
+
+func state_normal():
 	if is_multiplayer_authority():
 		velocity = global_position.direction_to(target_position) * 40
-		move_and_slide()
+		if attack_cooldown_timer.is_stopped() && global_position.distance_to(target_position) < 150:
+			state_machine.change_state(state_charge_attack)
+	flip()
+
+
+func enter_state_charge_attack():
+	acquire_target()
+	charge_attack_timer.start()
+
+func state_charge_attack():
+	if is_multiplayer_authority():
+		velocity = velocity.lerp(Vector2.ZERO, 1.0 - exp(-15*get_process_delta_time()))
+		if charge_attack_timer.is_stopped():
+			state_machine.change_state(state_attack())
+
+func enter_state_attack():
+	pass
+
+func state_attack():
+	pass
+
+
+
+
+
+func flip():
+	visuals.scale = Vector2.ONE if target_position.x > global_position.x \
+		else Vector2(-1, 1)
+
 
 
 func acquire_target():
@@ -51,4 +111,11 @@ func _on_target_acquisition_timer_timeout():
 
 func _on_died():
 	GameEvents.emit_enemy_died()
-	queue_free()
+	var tween := create_tween()
+	tween.tween_property(visuals, "scale", Vector2.ZERO, .2)\
+	.from(Vector2.ONE)\
+	.set_ease(Tween.EASE_IN)\
+	.set_trans(Tween.TRANS_BACK)
+	tween.finished.connect(func ():
+		queue_free()
+		)

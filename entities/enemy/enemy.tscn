@@ -34,7 +34,7 @@ replication_config = SubResource("SceneReplicationConfig_07j06")
 
 [node name="TargetAcquisitionTimer" type="Timer" parent="."]
 wait_time = 0.2
-autostart = true
+one_shot = true
 
 [node name="AttackCooldownTimer" type="Timer" parent="."]
 wait_time = 4.0
@@ -68,5 +68,6 @@ shape = SubResource("CircleShape2D_xaiun")
 position = Vector2(0, -10)
 collision_layer = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+[node name="HitboxCollisionShape" type="CollisionShape2D" parent="HitboxComponent"]
+unique_name_in_owner = true
 shape = SubResource("RectangleShape2D_1e1x2")

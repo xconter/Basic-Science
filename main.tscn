@@ -19,7 +19,7 @@ enemy_spawn_root = NodePath("../YSortRoot")
 spawn_rect = NodePath("../SpawnRect")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://entities/bullet/bullet.tscn", "res://entities/enemy/enemy.tscn")
+_spawnable_scenes = PackedStringArray("res://entities/bullet/bullet.tscn", "res://entities/enemy/enemy.tscn", "res://entities/flashbang/flashbang.tscn")
 spawn_path = NodePath("../YSortRoot")
 
 [node name="GameUI" parent="." node_paths=PackedStringArray("enemy_manager") instance=ExtResource("3_plj0i")]

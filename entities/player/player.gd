@@ -16,6 +16,7 @@ var flashbang : PackedScene = preload("uid://cpffxup4ywymm")
 @onready var flashbang_cooldown: Timer = $FlashbangCooldown
 
 var input_multiplayer_authority: int
+var died: bool
 
 func _ready():
 	player_input_synchronizer_component.set_multiplayer_authority(input_multiplayer_authority)
@@ -39,17 +40,17 @@ func update_aim_position():
 	weapon_root.look_at(aim_position)
 
 func try_flash_bang():
-	if !flashbang_cooldown.is_stopped():
+	if !flashbang_cooldown.is_stopped() or died:
 		return
 	print("flash")
 	var flashbang = flashbang.instantiate() as Flashbang
 	flashbang.global_position = barrel_position.global_position
-	
+	flashbang.start(player_input_synchronizer_component.aim_vector)
 	get_parent().add_child(flashbang, true)
 	flashbang_cooldown.start()
 
 func try_fire():
-	if !fire_rate_timer.is_stopped():
+	if !fire_rate_timer.is_stopped() or died:
 		return
 	var bullet = bullet_scene.instantiate() as Bullet
 	bullet.global_position = barrel_position.global_position
@@ -71,12 +72,14 @@ func play_fire_effects():
 	get_parent().add_child(muzzle_flash)
 
 func _on_died():
+	died = true
+	
 	print("player died")
 	var tween := create_tween()
 	tween.tween_property(visuals, "scale", Vector2.ZERO, .4)\
 	.from(Vector2.ONE)\
 	.set_ease(Tween.EASE_IN)\
 	.set_trans(Tween.TRANS_BACK)
-	tween.finished.connect(func ():
-		queue_free()
-		)
+	#tween.finished.connect(func ():
+	#	queue_free()
+	#	)

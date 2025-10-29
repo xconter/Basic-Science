@@ -6,5 +6,13 @@
 [node name="Flashbang" type="Node2D"]
 script = ExtResource("1_rrt51")
 
+[node name="TimeUntilFlash" type="Timer" parent="."]
+one_shot = true
+
+[node name="FlashTime" type="Timer" parent="."]
+wait_time = 0.8
+
+[node name="Flash" type="Sprite2D" parent="."]
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_o4hpc")

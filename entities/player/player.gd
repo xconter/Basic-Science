@@ -41,6 +41,7 @@ func update_aim_position():
 func try_flash_bang():
 	if !flashbang_cooldown.is_stopped():
 		return
+	print("flash")
 	var flashbang = flashbang.instantiate() as Flashbang
 	flashbang.global_position = barrel_position.global_position
 	

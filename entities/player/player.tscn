@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://boq44t4rdagy7"]
+[gd_scene load_steps=15 format=3 uid="uid://boq44t4rdagy7"]
 
 [ext_resource type="Script" path="res://entities/player/player.gd" id="1_kxneb"]
 [ext_resource type="PackedScene" uid="uid://dpelskke54et8" path="res://component/player_input_synchronizer_component.tscn" id="2_o2g38"]
@@ -73,11 +73,20 @@ _data = {
 properties/0/path = NodePath(".:global_position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
+properties/1/path = NodePath("ProgressBar:value")
+properties/1/spawn = true
+properties/1/replication_mode = 1
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_t1hdt"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ovvth"]
 radius = 5.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nt56w"]
+bg_color = Color(0.993524, 0.200076, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_65ch7"]
+bg_color = Color(0.14902, 0.721569, 0.168627, 1)
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_layer = 0
@@ -99,7 +108,7 @@ wait_time = 0.25
 one_shot = true
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_qgykb")]
-max_health = 5
+max_health = 100
 
 [node name="FlashbangCooldown" type="Timer" parent="."]
 wait_time = 5.0
@@ -140,3 +149,13 @@ health_component = NodePath("../HealthComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
 shape = SubResource("CircleShape2D_ovvth")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+offset_left = -29.0
+offset_top = -35.0
+offset_right = 28.0
+offset_bottom = -30.0
+theme_override_styles/background = SubResource("StyleBoxFlat_nt56w")
+theme_override_styles/fill = SubResource("StyleBoxFlat_65ch7")
+value = 100.0
+show_percentage = false

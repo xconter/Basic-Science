@@ -7,22 +7,28 @@ extends CharacterBody2D
 @onready var visuals: Node2D = $Visuals
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var barrel_position: Marker2D = %BarrelPosition
+@onready var progress_bar: ProgressBar = $ProgressBar
+
 
 var bullet_scene : PackedScene = preload("uid://ds1e0jqofdabu")
 var muzzle_flash_scene : PackedScene = preload("uid://cyhc4fkhlgpr")
 var flashbang : PackedScene = preload("uid://cpffxup4ywymm")
+
 
 @onready var fire_rate_timer: Timer = $FireRateTimer
 @onready var flashbang_cooldown: Timer = $FlashbangCooldown
 
 var input_multiplayer_authority: int
 var died: bool
+var health: int
+var flash_enabled: bool = false
 
 func _ready():
 	player_input_synchronizer_component.set_multiplayer_authority(input_multiplayer_authority)
 	health_component.died.connect(_on_died)
 	
 func _process(_delta: float) -> void:
+
 	update_aim_position()
 	if is_multiplayer_authority():
 		velocity = player_input_synchronizer_component.movement_vector * 100
@@ -40,7 +46,7 @@ func update_aim_position():
 	weapon_root.look_at(aim_position)
 
 func try_flash_bang():
-	if !flashbang_cooldown.is_stopped() or died:
+	if !flashbang_cooldown.is_stopped() or died or flash_enabled:
 		return
 	print("flash")
 	var flashbang = flashbang.instantiate() as Flashbang

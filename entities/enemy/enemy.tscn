@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cy2i4oeo6vcr2"]
+[gd_scene load_steps=13 format=3 uid="uid://cy2i4oeo6vcr2"]
 
 [ext_resource type="Texture2D" uid="uid://b85uho8cdubbm" path="res://entities/enemy/enemy_medium.png" id="1_58sm7"]
 [ext_resource type="Script" path="res://entities/enemy/enemy.gd" id="1_k5r5i"]
@@ -14,6 +14,9 @@ properties/0/replication_mode = 1
 properties/1/path = NodePath(".:target_position")
 properties/1/spawn = true
 properties/1/replication_mode = 2
+properties/2/path = NodePath("ProgressBar:value")
+properties/2/spawn = true
+properties/2/replication_mode = 1
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1vh4h"]
 size = Vector2(16, 24)
@@ -23,6 +26,12 @@ radius = 4.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1e1x2"]
 size = Vector2(10, 15)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tlk6o"]
+bg_color = Color(0.993524, 0.200076, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kee61"]
+bg_color = Color(0.14902, 0.721569, 0.168627, 1)
 
 [node name="Enemy" type="CharacterBody2D"]
 collision_layer = 2
@@ -46,7 +55,7 @@ wait_time = 0.5
 one_shot = true
 
 [node name="HealthComponent" parent="." instance=ExtResource("2_pgv5m")]
-max_health = 2
+max_health = 40
 
 [node name="HurtboxComponent" parent="." node_paths=PackedStringArray("health_component") instance=ExtResource("3_eqxfn")]
 health_component = NodePath("../HealthComponent")
@@ -76,3 +85,14 @@ collision_layer = 4
 [node name="HitboxCollisionShape" type="CollisionShape2D" parent="HitboxComponent"]
 unique_name_in_owner = true
 shape = SubResource("RectangleShape2D_1e1x2")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+offset_left = -28.0
+offset_top = -42.0
+offset_right = 29.0
+offset_bottom = -37.0
+theme_override_styles/background = SubResource("StyleBoxFlat_tlk6o")
+theme_override_styles/fill = SubResource("StyleBoxFlat_kee61")
+max_value = 40.0
+value = 40.0
+show_percentage = false

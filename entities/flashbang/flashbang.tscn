@@ -1,18 +1,25 @@
-[gd_scene load_steps=4 format=3 uid="uid://cpffxup4ywymm"]
+[gd_scene load_steps=5 format=3 uid="uid://cpffxup4ywymm"]
 
 [ext_resource type="Script" path="res://entities/flashbang/flashbang.gd" id="1_rrt51"]
+[ext_resource type="Texture2D" uid="uid://dnlque472pnta" path="res://entities/flashbang/Solid_white.png" id="2_n6prc"]
 [ext_resource type="Texture2D" uid="uid://dpawurajuyb75" path="res://entities/flashbang/dynamite.png" id="2_o4hpc"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_fhj30"]
 properties/0/path = NodePath(".:global_position")
 properties/0/spawn = true
-properties/0/replication_mode = 1
+properties/0/replication_mode = 0
 properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
-properties/1/replication_mode = 1
+properties/1/replication_mode = 0
 properties/2/path = NodePath(".:direction")
 properties/2/spawn = true
-properties/2/replication_mode = 1
+properties/2/replication_mode = 0
+properties/3/path = NodePath(".:SPEED")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("Sprite2D:self_modulate")
+properties/4/spawn = true
+properties/4/replication_mode = 1
 
 [node name="Flashbang" type="Node2D"]
 script = ExtResource("1_rrt51")
@@ -22,11 +29,16 @@ replication_config = SubResource("SceneReplicationConfig_fhj30")
 
 [node name="TimeUntilFlash" type="Timer" parent="."]
 one_shot = true
+autostart = true
 
 [node name="FlashTime" type="Timer" parent="."]
 wait_time = 0.8
 
 [node name="Flash" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0)
+position = Vector2(122.5, 107)
+scale = Vector2(8.435, 5.38)
+texture = ExtResource("2_n6prc")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_o4hpc")

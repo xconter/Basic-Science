@@ -8,6 +8,7 @@ var is_attack_pressed: bool
 var is_flash_pressed: bool
 
 
+
 func _process(_delta: float):
 	if is_multiplayer_authority():
 		gather_input()
